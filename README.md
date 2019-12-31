@@ -21,8 +21,11 @@ TODO
 
 This is the UNHCR (the UN refugee agency) official published data on the number of arrivals to Mediterranean countries, including Italy, Greece, Spain, Malta, and Cyprus. It offers total by month for each country, as well as (1) by country of origin for arrivals to Italy, Greece and Spain, (2) disaggregation of land and sea arrivals for Spain and Greece, and (3) daily arrivals for Greece and Italy. 
 
+There are significant discrepancies in the numbers provided by the different UNHCR disaggregation methods. The monthly totals generally (but not always) have the largest totals and are available for all of the countries of interest, therefore they will be used.
+
 **Limitations**: The data quality is suspect, as evidenced by the fact that the monthly totals vary across the disaggregation methods listed above. The data is also limited by the fact that this is only official asylum seeker registration. For smuggling routes, which are included in the mortality data, their goal is typically to bypass the Mediterranean countries and register for asylum in Western/Northern European countries. Therefore, asylum registries likely underestimate the monthly arrivals. 
 
 **TO DO, when final 2019 data is posted**
 * assemble comparison table of the differing values by UNHCR data source
 * reach out to Kobo/UNHCR (stats@unhcr.org) to get their API to work
+** Questions for UNHCR: why does Greece not have recorded land arrivals until 2018? Why does Spain not have public monthly data until 2017?
