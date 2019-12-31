@@ -1,6 +1,8 @@
 # Mortality in the Mediterranean
 Project analyzing mortality in Mediterranean Migration
 
+*Sarah Klem, MPH and Kathryne Tenney, MPH in affliation with the FXB Center for Health and Human Rights at the Harvard T.H. Chan School of Public Health*
+
 ## Project Goals and Inspiration
 TODO
 
