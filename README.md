@@ -29,5 +29,6 @@ There are significant discrepancies in the numbers provided by the different UNH
 
 **TO DO, when final 2019 data is posted**
 * assemble comparison table of the differing values by UNHCR data source
+* Look into which ships came via the Central route and were diverted to Spain or another country because the Italian or Maltese government refused to allow them to disembark. For example, this [August 2019 incident](https://elpais.com/elpais/2019/08/20/inenglish/1566295598_196996.html)
 * reach out to Kobo/UNHCR (stats@unhcr.org) to get their API to work
-* * Questions for UNHCR: why does Greece not have recorded land arrivals until 2018? Why does Spain not have public monthly data until 2017?
+  * Questions for UNHCR: why does Greece not have recorded land arrivals until 2018? Why does Spain not have public monthly data until 2017?
