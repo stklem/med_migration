@@ -1,0 +1,102 @@
+---
+title: "Visualization - Dead and Missing"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load packages, include=FALSE}
+#install.packages("tidyr")
+#install.packages("dplyr")
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(data.table)
+library(ggplot2)
+
+#install.packages("table1")
+library(table1)
+
+#install.packages("knitr")
+library(knitr)
+```
+
+```{r load missing med, include=FALSE}
+missing_med <- data.frame(fread("output/missing med final.csv"))
+```
+
+
+
+## Visualizations - Dead & Missing, absolute values
+
+### Tables
+To get a sense of general distribution
+
+**By Year**
+```{r tables, echo=FALSE}
+# By Year
+table1(~Number.Dead + Total.Dead.and.Missing + Migration.Route + Cause.of.Death.Brief| as.factor(Reported.Year), 
+       data = missing_med)
+
+```
+
+
+
+**By Major Migration Routes**
+```{r tables routes, echo=FALSE}
+# By Major Migration Routes
+table1(~Number.Dead + Total.Dead.and.Missing + Cause.of.Death.Brief + as.factor(Reported.Year)| Migration.Route,
+       data = missing_med[-which(missing_med$Migration.Route %in% c("Airplane",
+                                                                    "Eastern Europe",
+                                                                    "Western Asia",
+                                                                    "Western Europe")),],
+       overall = FALSE)
+```
+
+
+
+### Histograms
+```{r histograms, echo=FALSE}
+# short route names
+short_route <- c("Central Med", "Eastern Med", "Western Med")
+names(short_route) <- c("Central Mediterranean", "Eastern Mediterranean", "Western Mediterranean")
+
+# sea routes by # involved and year
+missing_med[which(missing_med$Total.Dead.and.Missing < 200 &
+                    missing_med$Migration.Route %in% c("Central Mediterranean",
+                                                       "Eastern Mediterranean",
+                                                       "Western Mediterranean")),] %>% 
+  ggplot(aes(x = Total.Dead.and.Missing, fill = Migration.Route)) +
+  geom_histogram(aes(y=..count..), binwidth = 10) +
+  facet_grid(rows = vars(Migration.Route), 
+             cols = vars(Reported.Year), 
+             labeller = labeller(Migration.Route = short_route)) +
+  labs(title = "Number of Dead/Missing per Incident, by Major Migration Routes and Year") +
+  theme(legend.position = "none",
+        axis.title.y = element_blank())
+
+
+# sea routes by year, stacked
+missing_med[which(missing_med$Migration.Route %in% c("Central Mediterranean",
+                                                     "Eastern Mediterranean",
+                                                     "Western Mediterranean")),] %>% 
+  ggplot(aes(x = Reported.Year, fill = Migration.Route)) +
+  geom_bar(aes(y=..count..)) +
+  facet_grid(rows = vars(Migration.Route), 
+             labeller = labeller(Migration.Route = short_route)) +
+  labs(title = "Mediterranean Routes, # Unique Incidents by Year") +
+  theme(axis.title = element_blank())
+
+# sea routes by year, stacked
+missing_med[which(missing_med$Migration.Route %in% c("Central Mediterranean",
+                                                     "Eastern Mediterranean",
+                                                     "Western Mediterranean")),] %>% 
+  ggplot(aes(x = Reported.Year, fill = Migration.Route)) +
+  geom_bar(aes(y=..count..), position = "stack") +
+  labs(title = "Mediterranean Routes, # Unique Incidents by Year") +
+  theme(axis.title = element_blank())
+
+```
+
