@@ -24,7 +24,7 @@ library(knitr)
 ```
 
 ```{r load missing med, include=FALSE}
-missing_med <- data.frame(fread("output/missing med final.csv"))
+missing_med <- data.frame(fread("output_data/missing med final.csv"))
 ```
 
 
@@ -73,10 +73,10 @@ missing_med[which(missing_med$Total.Dead.and.Missing < 200 &
   facet_grid(rows = vars(Migration.Route), 
              cols = vars(Reported.Year), 
              labeller = labeller(Migration.Route = short_route)) +
-  labs(title = "Number of Dead/Missing per Incident, by Major Migration Routes and Year") +
+  labs(title = "Number of Dead/Missing per Incident, by Major Routes and Year") +
   theme(legend.position = "none",
-        axis.title.y = element_blank())
-
+        axis.title.y = element_blank()) + 
+  ggsave("total_per_incident.png", device = "png", path = "visualization/")
 
 # sea routes by year, stacked
 missing_med[which(missing_med$Migration.Route %in% c("Central Mediterranean",
@@ -87,7 +87,8 @@ missing_med[which(missing_med$Migration.Route %in% c("Central Mediterranean",
   facet_grid(rows = vars(Migration.Route), 
              labeller = labeller(Migration.Route = short_route)) +
   labs(title = "Mediterranean Routes, # Unique Incidents by Year") +
-  theme(axis.title = element_blank())
+  theme(axis.title = element_blank()) + 
+  ggsave("incidents_by_year.png", device = "png", path = "visualization/")
 
 # sea routes by year, stacked
 missing_med[which(missing_med$Migration.Route %in% c("Central Mediterranean",
@@ -96,7 +97,8 @@ missing_med[which(missing_med$Migration.Route %in% c("Central Mediterranean",
   ggplot(aes(x = Reported.Year, fill = Migration.Route)) +
   geom_bar(aes(y=..count..), position = "stack") +
   labs(title = "Mediterranean Routes, # Unique Incidents by Year") +
-  theme(axis.title = element_blank())
+  theme(axis.title = element_blank()) + 
+  ggsave("incidents_by_year_stacked.png", device = "png", path = "visualization/")
 
 ```
 
