@@ -1,0 +1,163 @@
+---
+title: "Visualization - Mortality"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load packages, include=FALSE}
+#install.packages("tidyr")
+#install.packages("dplyr")
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(data.table)
+library(ggplot2)
+
+#install.packages("table1")
+library(table1)
+
+#install.packages("knitr")
+library(knitr)
+```
+
+```{r load missing med, include=FALSE}
+summary_all_month <- fread("output/summary data by month.csv")
+summary_all_year <- fread("output/summary data by year.csv")
+summary_all_month$Year <- as.factor(summary_all_month$Year)
+summary_all_year$Year <- as.factor(summary_all_year$Year)
+```
+
+## Visualizations - Mortality
+
+### All Routes, data by month
+```{r all routes monthly, echo=FALSE}
+# short route names
+short_route <- c("Central Med", "Eastern Med", "Western Med")
+names(short_route) <- c("Central Mediterranean", "Eastern Mediterranean", "Western Mediterranean")
+
+summary_all_month %>% 
+  ggplot(aes(y = mortality, x = Month, fill = Migration.Route), na.rm = TRUE) +
+  geom_col(na.rm = TRUE) +
+  facet_grid(cols = vars(Year), 
+             rows = vars(Migration.Route), 
+             labeller = labeller(Migration.Route = short_route)) +
+  labs(title = "Mortality Rate per 1000 arrivals, By Route and Year") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        legend.position = "none")
+
+summary_all_month %>% 
+  ggplot(aes(y = total_attempted, x = Month, color = Migration.Route), na.rm = TRUE) +
+  geom_line(aes(group = 1)) +
+  facet_grid(cols = vars(Year), 
+             rows = vars(Migration.Route), 
+             labeller = labeller(Migration.Route = short_route)) +
+  labs(title = "Total Attempts, By Route and Year") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        legend.position = "none")
+
+all_scalefactor = 500
+summary_all_month %>% 
+  ggplot(aes(y = total_attempted, x = Month, group = 1)) +
+  geom_col(aes(y = mortality * all_scalefactor,  fill = Migration.Route)) +
+  geom_line() +
+  facet_grid(cols = vars(Year), 
+             rows = vars(Migration.Route), 
+             labeller = labeller(Migration.Route = short_route)) +
+  scale_y_continuous("# Attempts", sec.axis = sec_axis((~ . / all_scalefactor), name = "Mortality")) + 
+  labs(title = "Mortality Rate and Attempts, by Time and Migration Route") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        legend.position = "none")
+```
+
+### All Routes, data by year
+```{r all routes yearly, echo=FALSE}
+all_scalefactor = 10000
+summary_all_year %>% 
+  ggplot(aes(y = total_attempted, x = Year, group = 1)) +
+  geom_col(aes(y = mortality * all_scalefactor,  fill = Migration.Route)) +
+  geom_line() +
+  facet_grid(rows = vars(Migration.Route), 
+             labeller = labeller(Migration.Route = short_route)) +
+  scale_y_continuous("# Attempts", sec.axis = sec_axis((~ . / all_scalefactor), name = "Mortality")) + 
+  labs(title = "Mortality Rate and Attempts, by Time and Migration Route") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        legend.position = "none")
+```
+
+### Eastern Mediterranean Route: Greece and Cyprus
+```{r Eastern Mediterranean, echo=FALSE}
+summary_all_month[Migration.Route == "Eastern Mediterranean"] %>% 
+  ggplot(aes(y = mortality, x = Month, fill = Year), na.rm = TRUE) +
+  geom_col(na.rm = TRUE) +
+  facet_grid(rows = vars(Year)) +
+  labs(title = "Eastern Mediterranean: Mortality Rate per 1000 arrivals, By Year") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        legend.position = "none")
+
+e_scalefactor = 7000
+summary_all_month[Migration.Route == "Eastern Mediterranean"] %>% 
+  ggplot(aes(x = Year.Month, y = total_attempted, group = 1)) +
+  geom_col(aes(y = mortality * e_scalefactor,  fill = Year)) +
+  geom_line() +
+  scale_y_continuous("# Arrivals", sec.axis = sec_axis((~ . / e_scalefactor), name = "Mortality")) + 
+  labs(title = "Eastern Mediterranean: Mortality by Attempts, over time") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+```
+
+
+### Central Mediterranean Route: Italy and Malta
+```{r Central Mediterranean, echo=FALSE}
+summary_all_month[Migration.Route == "Central Mediterranean"] %>% 
+  ggplot(aes(y = mortality, x = Month, fill = Year), na.rm = TRUE) +
+  geom_col(na.rm = TRUE) +
+  facet_grid(rows = vars(Year)) +
+  labs(title = "Central Mediterranean: Mortality Rate per 1000 arrivals, By Year") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        legend.position = "none")
+
+c_scalefactor = 100
+summary_all_month[Migration.Route == "Central Mediterranean"] %>% 
+  ggplot(aes(x = Year.Month, y = total_attempted, group = 1)) +
+  geom_col(aes(y = mortality * c_scalefactor,  fill = Year)) +
+  geom_line() +
+  scale_y_continuous("# Arrivals", sec.axis = sec_axis((~ . / c_scalefactor), name = "Mortality")) + 
+  labs(title = "Central Mediterranean: Mortality by Attempts, over time") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+```
+
+
+### Western Mediterranean Route: Spain
+```{r Western Mediterranean, echo=FALSE}
+summary_all_month[Migration.Route == "Western Mediterranean"] %>% 
+  ggplot(aes(y = mortality, x = Month, fill = Year), na.rm = TRUE) +
+  geom_col(na.rm = TRUE) +
+  facet_grid(rows = vars(Year)) +
+  labs(title = "Western Mediterranean: Mortality Rate per 1000 arrivals, By Year") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        legend.position = "none")
+
+w_scalefactor = 200
+summary_all_month[Migration.Route == "Western Mediterranean"] %>% 
+  ggplot(aes(x = Year.Month, y = total_attempted, group = 1)) +
+  geom_col(aes(y = mortality * w_scalefactor,  fill = Year)) +
+  geom_line() +
+  scale_y_continuous("# Arrivals", sec.axis = sec_axis((~ . / w_scalefactor), name = "Mortality")) + 
+  labs(title = "Western Mediterranean: Mortality by Attempts, over time") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+```
