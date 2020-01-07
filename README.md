@@ -3,8 +3,14 @@ Project analyzing mortality in Mediterranean Migration
 
 *Sarah Klem, MPH, and Kathryne Tenney, MPH, in affliation with the FXB Center for Health and Human Rights at the Harvard T.H. Chan School of Public Health*
 
-## Project Goals and Inspiration
-TODO
+## Introduction
+
+### Research Question
+European governments have gone to extraordinary efforts to harden European borders and prevent Mediterranean crossing. By combining publicly available data sets, we are seeking to explore the trends in arrivals and mortality in the Mediterranean. We hypothesize that deterrence efforts have decreased arrivals but, by pushing migrants to more dangerous routes, have increased the mortality rate of Mediterranean crossings. 
+
+### Why is this important?
+Migration in the Mediterranean is continuing, with hundreds arriving into Europe every day. These migration patterns have been around for millenia and will continue to be migration pathways in the future. European governments have a legal obligation (under maritime law) to rescue all who are in danger in their waters and transport them to a safe port. The challenges surrounding search and rescue in the Mediterran will continue to increase, especially as climate change forces new volumes of migration globally. 
+
 
 ## Data Sources
 
@@ -31,4 +37,3 @@ There are significant discrepancies in the numbers provided by the different UNH
 * assemble comparison table of the differing values by UNHCR data source
 * Look into which ships came via the Central route and were diverted to Spain or another country because the Italian or Maltese government refused to allow them to disembark. For example, this [August 2019 incident](https://elpais.com/elpais/2019/08/20/inenglish/1566295598_196996.html)
 * reach out to Kobo/UNHCR (stats@unhcr.org) to get their API to work
-  * Questions for UNHCR: why does Greece not have recorded land arrivals until 2018? Why does Spain not have public monthly data until 2017?
